@@ -1,45 +1,130 @@
 @import "tailwindcss";
 
+/* Keep your CSS variables — they're fine */
 :root {
   --text: #6b6375;
   --text-h: #08060d;
   --bg: #fff;
   --border: #e5e4e7;
-  --code-bg: #f4f3ec;
   --accent: #aa3bff;
-  --accent-bg: rgba(170, 59, 255, 0.1);
-  --accent-border: rgba(170, 59, 255, 0.5);
-  --social-bg: rgba(244, 243, 236, 0.5);
-  --shadow: rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
-
   --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --heading: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --mono: ui-monospace, Consolas, monospace;
 }
+
 @media (prefers-color-scheme: dark) {
   :root {
     --text: #9ca3af;
     --text-h: #f3f4f6;
     --bg: #16171d;
     --border: #2e303a;
-    --code-bg: #1f2028;
     --accent: #c084fc;
-    --accent-bg: rgba(192, 132, 252, 0.15);
-    --accent-border: rgba(192, 132, 252, 0.5);
-    --social-bg: rgba(47, 48, 58, 0.5);
-    --shadow: rgba(0, 0, 0, 0.4) 0 10px 15px -3px, rgba(0, 0, 0, 0.25) 0 4px 6px -2px;
   }
 }
+
 body {
   margin: 0;
+  padding: 0;
 }
+
+.rgb-button {
+  isolation: isolate;
+  border: 2px solid transparent;
+}
+
+.rgb-button:not(.absolute) {
+  position: relative;
+}
+
+.rgb-button::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  z-index: -1;
+  padding: 2px;
+  border-radius: inherit;
+  background: conic-gradient(from var(--rgb-angle, 0deg), #ff304f, #ffcf33, #35e56f, #32b8ff, #9b5cff, #ff304f);
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  pointer-events: none;
+  opacity: 0.95;
+}
+
+.rgb-button:hover::before {
+  opacity: 1;
+  filter: brightness(1.15);
+}
+
+.rgb-button:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 3px;
+}
+
+.rgb-button:disabled::before {
+  animation-play-state: paused;
+  opacity: 0.45;
+}
+
+.rgb-button::before {
+  animation: rgb-border-spin 4s linear infinite;
+}
+
+@property --rgb-angle {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
+}
+
+@keyframes rgb-border-spin {
+  to {
+    --rgb-angle: 360deg;
+  }
+}
+
+.profile-role-avatar {
+  --profile-role-color: #f97316;
+  position: relative;
+  isolation: isolate;
+  border: 3px solid var(--profile-role-color);
+  transition: border-color 500ms ease, box-shadow 500ms ease;
+  animation: profile-role-pulse 4s ease-in-out infinite;
+}
+
+.profile-role-avatar[data-role='gamer' i] {
+  --profile-role-color: #ef4444;
+}
+
+.profile-role-avatar[data-role='working' i] {
+  --profile-role-color: #7c3aed;
+}
+
+.profile-role-avatar[data-role='student' i] {
+  --profile-role-color: #3b82f6;
+}
+
+.profile-role-avatar[data-role='enthusiast' i] {
+  --profile-role-color: #f97316;
+}
+
+.profile-role-avatar[data-role='merchant' i] {
+  --profile-role-color: #10b981;
+}
+
+.profile-role-avatar[data-role='admin' i] {
+  --profile-role-color: #eab308;
+}
+
+@keyframes profile-role-pulse {
+  0%, 100% {
+    box-shadow: 0 0 0 0 color-mix(in srgb, var(--profile-role-color) 25%, transparent);
+  }
+  50% {
+    box-shadow: 0 0 0 4px color-mix(in srgb, var(--profile-role-color) 15%, transparent);
+  }
+}
+
+/* ✅ Fixed — full width, no centering, no side borders */
 #root {
-  width: 1126px;
-  max-width: 100%;
-  margin: 0 auto;
-  text-align: center;
-  border-inline: 1px solid var(--border);
-  min-height: 100svh;
+  width: 100%;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
   box-sizing: border-box;

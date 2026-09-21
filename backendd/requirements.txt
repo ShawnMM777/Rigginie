@@ -1,0 +1,8 @@
+Django
+djangorestframework
+djangorestframework-simplejwt
+django-cors-headers
+google-auth
+python-dotenv
+numpy
+scikit-learn

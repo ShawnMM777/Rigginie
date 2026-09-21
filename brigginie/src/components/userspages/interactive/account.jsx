@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router';
 import { authAPI, storeAuthData, clearAuthData } from "../../../services/api";
 import logo from "../../../assets/logo.png";
 import gcash from "../../../assets/gcash.png";
@@ -302,7 +302,7 @@ function ProfileDropdown({ user, onLogout }) {
                     {/* User Info Section */}
                     <div className="bg-orange-50 border-b border-gray-200 p-4">
                         <div className="flex items-center gap-3">
-                            <div className="w-12 h-12 bg-orange-500 rounded-full flex items-center justify-center text-white font-bold">
+                            <div data-role={user?.usertype || user?.userType || user?.user_type || user?.role || 'enthusiast'} className="profile-role-avatar w-12 h-12 rounded-full flex items-center justify-center text-white font-bold">
                                 {user?.firstName?.charAt(0).toUpperCase()}
                             </div>
                             <div>
@@ -484,8 +484,6 @@ function account() {
                         {isNavOpen ? '✕' : '☰'}
                     </button>
                 </div>
-
-                {/* Mobile Menu */}
                 {isNavOpen && (
                     <div className="md:hidden mt-6 pt-6 border-t border-orange-400 bg-orange-500">
                         <div className="flex flex-col gap-4 text-white font-medium text-center py-4">
@@ -508,8 +506,6 @@ function account() {
                     </div>
                 )}
             </nav>
-
-            {/* MAIN CONTENT */}
             <main className="flex-1 flex items-center justify-center p-6">
                 <div className="text-center max-w-3xl mx-auto">
                     <IoMdWarning className="text-orange-500 text-8xl mx-auto mb-4" />
@@ -524,10 +520,7 @@ function account() {
                     <p className="text-xl text-red-600 font-semibold">UNDER MAINTENANCE</p>
                 </div>
             </main>
-
             <Footer />
-
-            {/* LOCATION BUTTON */}
             <div className="fixed bottom-6 right-6 z-50 cursor-pointer hover:scale-105 transition-transform">
                 <div className="relative w-24 h-24">
                     <button

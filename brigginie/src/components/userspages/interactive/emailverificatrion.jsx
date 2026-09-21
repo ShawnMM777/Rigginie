@@ -23,30 +23,23 @@ function EmailVerificationModal({ isOpen, onClose, email, onVerificationSuccess 
             document.getElementById(`code-${index - 1}`)?.focus();
     };
 
-    const handleVerifyEmail = async (e) => {
-        e.preventDefault();
-        const fullCode = code.join('');
-        if (fullCode.length !== 6) { setError('Please enter all 6 digits'); return; }
+    const handleVerifyEmail = async (e) => { e.preventDefault(); const fullCode = code.join('');
+    if (fullCode.length !== 6) { setError('Please enter all 6 digits'); return; }
+    setError('');
+    setLoading(true);
+    try { const response = await authAPI.verifyEmail({ email, code: fullCode });
+        setSuccess(true);
+        setTimeout(() => {
+            onVerificationSuccess({ access:  response.data.access,  refresh: response.data.refresh, user:    response.data.user, });
+            onClose();
+        }, 1500); // wait 1.5s so user sees "Email verified successfully!"
 
-        setError('');
-        setLoading(true);
-        try {
-            const response = await authAPI.verifyEmail({ email, code: fullCode });
-            setSuccess(true);
-            setTimeout(() => {
-                onVerificationSuccess({
-                    access:  response.data.access,
-                    refresh: response.data.refresh,
-                    user:    response.data.user,
-                });
-                onClose();
-            }, 1500);
         } catch (err) {
-            const msg = err.response?.data?.message || 'Verification failed';
-            setError(msg);
-            setCode(['', '', '', '', '', '']);
+        const msg = err.response?.data?.message || 'Verification failed';
+        setError(msg);
+        setCode(['', '', '', '', '', '']);
         } finally {
-            setLoading(false);
+        setLoading(false);
         }
     };
 
